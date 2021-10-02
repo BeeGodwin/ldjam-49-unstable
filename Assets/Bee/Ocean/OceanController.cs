@@ -6,14 +6,17 @@ namespace Bee.Ocean
 {
     public class OceanController : MonoBehaviour
     {
-        public float wavelengthFactor;
+        public float wavePeriodFactor;
+        public float waveLengthFactor;
         public float waveMagnitude;
-        
+
         private List<OceanNodeController> _nodes = new List<OceanNodeController>();
-        private float _waveTimer = 0;
-    
+
+        private float _yPos;
+        
         void Start()
         {
+            _yPos = transform.GetChild(0).transform.position.y;
             foreach (Transform child in transform)
             {
                 var node = child.GetComponent<OceanNodeController>();
@@ -23,14 +26,15 @@ namespace Bee.Ocean
 
         void Update()
         {
-            _waveTimer += Time.deltaTime;
+            var radians = (Time.time * wavePeriodFactor) % 360 * Mathf.Deg2Rad;
+            
             _nodes.ForEach(node =>
             {
-                var position = node.transform.position;
-                var positionModifier = (position.x + 9) * wavelengthFactor + _waveTimer;
+                var x = node.transform.position.x;
+                var positionModifier = radians + x * waveLengthFactor;
                 var sin = Mathf.Sin(positionModifier);
-                var y = position.y + sin * waveMagnitude;
-                node.transform.position = new Vector2(position.x, y);
+                var y = sin * waveMagnitude;
+                node.transform.position = new Vector2(x, y + _yPos);
             });
         }
     }
