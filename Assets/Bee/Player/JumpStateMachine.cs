@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Bee.Player
 {
-    public class PlayerJumpStateMachine
+    public class JumpStateMachine
     {
         private JumpState _jumpState;
 
-        public PlayerJumpStateMachine()
+        public JumpStateMachine()
         {
             _jumpState = JumpState.Grounded;
         }
@@ -17,29 +17,31 @@ namespace Bee.Player
             return _jumpState;
         }
 
-        public void tryJump(IJumper player, float jumpForce)
+        public void tryJump(IJumper jumper, float jumpForce)
         {
-            if (_jumpState == JumpState.Grounded && player.IsGrounded())
+            if (_jumpState == JumpState.Grounded && jumper.IsGrounded())
             {
                 _jumpState = JumpState.Airborne;
-                player.DoJump(jumpForce);
+                jumper.DoJump(jumpForce);
             }
         }
 
-        public void Update(IJumper player)
+        public void Update(IJumper jumper)
         {
             switch (_jumpState)
             {
                 case JumpState.Airborne:
-                    if (player.GetVelocity().y <= 0 && player.IsGrounded()) // timer might be better?
+                    if (jumper.IsGrounded())
                     {
+                        Debug.Log("Grounded");
                         _jumpState = JumpState.Grounded;
                     }
                     break;
+                case JumpState.Jumping:
+                    _jumpState = JumpState.Airborne;
+                    break;
                 case JumpState.Grounded:
                     //noop
-                    break;
-                default:
                     break;
             }
         }
@@ -48,13 +50,14 @@ namespace Bee.Player
     public interface IJumper
     {
         public bool IsGrounded();
-        public void DoJump(float withJumpForce);
+        public void DoJump(float yVelocity);
         public Vector2 GetVelocity();
     }
 
     public enum JumpState
     {
         Grounded,
+        Jumping,
         Airborne
     }
 }

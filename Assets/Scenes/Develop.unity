@@ -1001,12 +1001,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5a291a688214617b22046b8c1aec61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5
-  accel: 60
-  jumpForce: 60
-  moveDamping: 5
-  airWalkDamping: 10
-  groundProbeLength: 0.2
+  maxSpeed: 3
+  accel: 75
+  jumpYVelocity: 5
+  jumpBounceTime: 0.5
+  moveDamping: 10
+  airWalkDamping: 20
+  groundProbeLength: 0.1
   groundProbePoint: {fileID: 460932318}
   jumpMask:
     serializedVersion: 2

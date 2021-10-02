@@ -8,34 +8,30 @@ namespace Bee.Player
     {
         // dependencies
         private Rigidbody2D _rb;
-        private PlayerJumpStateMachine _stateMachine;
+        private JumpStateMachine _stateMachine;
         
         // parameters
         public float maxSpeed;
         public float accel;
-        public float jumpForce;
+        public float jumpYVelocity;
+        public float jumpBounceTime;
         public float moveDamping;
         public float airWalkDamping;
         public float groundProbeLength;
         public Transform groundProbePoint;
         public LayerMask jumpMask;
         
+        // memo
+        private Vector2 _velocity;
+        private float _jumpBounceTimer;
+        
         void Start()
         {
             _rb = this.gameObject.transform.GetChild(0).GetComponent<Rigidbody2D>();
-            _stateMachine = new PlayerJumpStateMachine();
+            _stateMachine = new JumpStateMachine();
+            _jumpBounceTimer = 0;
         }
-
-        void Update()
-        {
-            _stateMachine.Update(this);
-
-            HandleJump();
-            HandleMove();
-            
-            // we might need a grab key?
-        }
-
+        
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
@@ -43,37 +39,59 @@ namespace Bee.Player
             Gizmos.DrawRay(groundProbePoint.position, direction * groundProbeLength);
         }
 
+        void Update()
+        {
+            HandleMovement();
+            _stateMachine.Update(this);
+        }
+
+        void HandleMovement()
+        {
+            _jumpBounceTimer += Time.deltaTime;
+            _velocity = _rb.velocity;
+            HandleJump();
+            HandleMove();
+            _rb.velocity = _velocity;
+        }
+        
         private void HandleJump()
         {
             var jump = Input.GetButton("Jump");
-            if (jump)
-                _stateMachine.tryJump(this, jumpForce);
+            if (jump && _jumpBounceTimer >= jumpBounceTime)
+                _stateMachine.tryJump(this, jumpYVelocity);
         }
 
         private void HandleMove()
         {
-            // TODO: flip player X if needed
-
             var xAxis = Input.GetAxis("Horizontal");
+            
+            // if (Math.Abs(Mathf.Sign(xAxis) - Mathf.Sign(_rb.velocity.x)) > Mathf.Epsilon) FlipPlayerX();
+            
             if (Mathf.Abs(xAxis) > 0)
             {
                 var moveForce = _stateMachine.GetState() == JumpState.Grounded ? accel : accel * airWalkDamping;
-                _rb.AddForce(new Vector2(xAxis, 0) * moveForce * Time.deltaTime); // should this be relative to the raft?
+                var moveDelta = xAxis * moveForce * Time.deltaTime;
                 
+                _velocity = new Vector2(_velocity.x + moveDelta, _velocity.y);
             }
             else
             {
-                var velocity = _rb.velocity;
-                var difference = -velocity.x * moveDamping * Time.deltaTime;
-                _rb.velocity = new Vector2(velocity.x + difference, velocity.y);
+                var difference = -_velocity.x * moveDamping * Time.deltaTime;
+                _velocity = new Vector2(_velocity.x + difference, _velocity.y);
             }
 
             if (Mathf.Abs(_rb.velocity.x) > maxSpeed)
             {
-                var cappedVelocity = _rb.velocity.normalized * maxSpeed;
-                _rb.velocity = cappedVelocity;
+                var cappedVelocity = _velocity.normalized * maxSpeed;
+                _velocity = cappedVelocity;
             }
-            
+        }
+
+        private void FlipPlayerX()
+        {
+            var velocity = _rb.velocity;
+            velocity = new Vector2(velocity.x / moveDamping, velocity.y);
+            _rb.velocity = velocity;
         }
 
         public bool IsGrounded()
@@ -81,9 +99,11 @@ namespace Bee.Player
             return Physics2D.Raycast(groundProbePoint.position, Vector2.down, groundProbeLength, jumpMask).collider != null;
         }
 
-        public void DoJump(float withJumpForce)
+        public void DoJump(float yVelocity)
         {
-            _rb.AddForce(new Vector2(0, withJumpForce));
+            _jumpBounceTimer = 0;
+            _rb.AddForce(Vector2.up * yVelocity);
+            // _velocity = new Vector2(_velocity.x, yVelocity);
         }
 
         public Vector2 GetVelocity()
