@@ -16,7 +16,8 @@ namespace Bee.Player
         public float jumpYVelocity;
         public float jumpBounceTime;
         public float moveDamping;
-        public float airWalkDamping;
+        public float airWalkFactor;
+        public float turningFactor;
         public float groundProbeLength;
         public Transform groundProbePoint;
         public LayerMask jumpMask;
@@ -47,67 +48,59 @@ namespace Bee.Player
 
         void HandleMovement()
         {
-            _jumpBounceTimer += Time.deltaTime;
             _velocity = _rb.velocity;
-            HandleJump();
-            HandleMove();
-            _rb.velocity = _velocity;
-        }
-        
-        private void HandleJump()
-        {
-            var jump = Input.GetButton("Jump");
-            if (jump && _jumpBounceTimer >= jumpBounceTime && _stateMachine.GetState() == JumpState.Grounded)
-                _stateMachine.TryJump(this);
+            var x = VelocityXFromMove();
+            var y = VelocityYFromJump();
+            _rb.velocity = new Vector2(x, y);
         }
 
-        private void HandleMove()
+        float VelocityXFromMove()
         {
             var xAxis = Input.GetAxis("Horizontal");
-            
-            // if (Math.Abs(Mathf.Sign(xAxis) - Mathf.Sign(_rb.velocity.x)) > Mathf.Epsilon) FlipPlayerX();
+
+            float x = 0;
             
             if (Mathf.Abs(xAxis) > 0)
             {
-                var moveForce = _stateMachine.GetState() == JumpState.Grounded ? accel : accel * airWalkDamping;
+                var moveForce = _stateMachine.GetState() == JumpState.Grounded ? accel : accel * airWalkFactor;
                 var moveDelta = xAxis * moveForce * Time.deltaTime;
                 
-                _velocity = new Vector2(_velocity.x + moveDelta, _velocity.y);
+                if (Math.Abs(Mathf.Sign(xAxis) - Mathf.Sign(_velocity.x)) > Mathf.Epsilon) moveDelta *= turningFactor;
+
+                x = _velocity.x + moveDelta;
             }
             else
             {
-                var difference = -_velocity.x * moveDamping * Time.deltaTime;
-                _velocity = new Vector2(_velocity.x + difference, _velocity.y);
+                var damping = _velocity.x * moveDamping * Time.deltaTime;
+                x = _velocity.x - damping;
             }
 
-            if (Mathf.Abs(_rb.velocity.x) > maxSpeed)
+            if (Mathf.Abs(x) > maxSpeed)
             {
-                var cappedVelocity = _velocity.normalized * maxSpeed;
-                _velocity = cappedVelocity;
+                x = x > 0 ? maxSpeed : -maxSpeed;
             }
+            
+            return x;
         }
 
-        private void FlipPlayerX()
+        private float VelocityYFromJump()
         {
-            var velocity = _rb.velocity;
-            velocity = new Vector2(velocity.x / moveDamping, velocity.y);
-            _rb.velocity = velocity;
-        }
+            _jumpBounceTimer -= Time.deltaTime;
+            
+            if (!Input.GetButton("Jump")) return _velocity.y;
 
+            if (_jumpBounceTimer <= 0 && _stateMachine.GetState() == JumpState.Grounded)
+            {
+                _stateMachine.SetJumping();
+                _jumpBounceTimer = jumpBounceTime;
+                return jumpYVelocity;
+            }
+
+            return _velocity.y;
+        }
         public bool IsGrounded()
         {
             return Physics2D.Raycast(groundProbePoint.position, Vector2.down, groundProbeLength, jumpMask).collider != null;
-        }
-
-        public void DoJump()
-        {
-            _jumpBounceTimer = 0;
-            _velocity = new Vector2(_velocity.x, jumpYVelocity);
-        }
-
-        public Vector2 GetVelocity()
-        {
-            return _rb.velocity;
         }
     }
 }
