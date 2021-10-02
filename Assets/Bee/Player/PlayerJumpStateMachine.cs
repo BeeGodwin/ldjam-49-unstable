@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Bee.Player
 {
@@ -20,8 +21,8 @@ namespace Bee.Player
         {
             if (_jumpState == JumpState.Grounded && player.IsGrounded())
             {
-                player.doJump(jumpForce);
                 _jumpState = JumpState.Airborne;
+                player.DoJump(jumpForce);
             }
         }
 
@@ -30,7 +31,7 @@ namespace Bee.Player
             switch (_jumpState)
             {
                 case JumpState.Airborne:
-                    if (player.IsGrounded())
+                    if (player.GetVelocity().y <= 0 && player.IsGrounded())
                     {
                         _jumpState = JumpState.Grounded;
                     }
@@ -47,7 +48,8 @@ namespace Bee.Player
     public interface IJumper
     {
         public bool IsGrounded();
-        public void doJump(float withJumpForce);
+        public void DoJump(float withJumpForce);
+        public Vector2 GetVelocity();
     }
 
     public enum JumpState
