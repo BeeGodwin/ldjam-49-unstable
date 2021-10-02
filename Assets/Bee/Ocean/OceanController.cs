@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Bee.Ocean
 {
@@ -10,21 +9,20 @@ namespace Bee.Ocean
         public float waveLengthFactor;
         public float waveMagnitude;
 
+        public float oceanExtent;
+        public float nodeScale;
+        public float nodeInterval;
+        public GameObject oceanNodePrefab;
         private List<OceanNodeController> _nodes = new List<OceanNodeController>();
-
-        private float _yPos;
         
-        void Start()
+        public float yPos;
+
+        public void Start()
         {
-            _yPos = transform.GetChild(0).transform.position.y;
-            foreach (Transform child in transform)
-            {
-                var node = child.GetComponent<OceanNodeController>();
-                _nodes.Add(node);
-            }
+            InstantiateNodes();
         }
 
-        void Update()
+        public void Update()
         {
             var radians = (Time.time * wavePeriodFactor) % 360 * Mathf.Deg2Rad;
             
@@ -34,8 +32,21 @@ namespace Bee.Ocean
                 var positionModifier = radians + x * waveLengthFactor;
                 var sin = Mathf.Sin(positionModifier);
                 var y = sin * waveMagnitude;
-                node.transform.position = new Vector2(x, y + _yPos);
+                node.transform.position = new Vector2(x, y + yPos);
             });
+        }
+
+        private void InstantiateNodes()
+        {
+            var xPos = -oceanExtent;
+            while (xPos <= oceanExtent)
+            {
+                var go = GameObject.Instantiate(oceanNodePrefab, transform);
+                go.transform.Translate(Vector2.down * yPos + Vector2.right * xPos);
+                go.transform.localScale = Vector3.one * nodeScale;
+                _nodes.Add(go.GetComponent<OceanNodeController>());
+                xPos += nodeInterval;
+            }
         }
     }
 }
