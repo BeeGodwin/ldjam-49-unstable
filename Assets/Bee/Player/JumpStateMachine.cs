@@ -45,7 +45,6 @@ namespace Bee.Player
     public interface IJumper
     {
         public bool IsGrounded();
-        // public void DoJump();
     }
 
     public enum JumpState

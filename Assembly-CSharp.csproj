@@ -58,6 +58,7 @@
      <Compile Include="Assets\Bee\Game\GameController.cs" />
      <Compile Include="Assets\Bee\Ocean\OceanNodeController.cs" />
      <Compile Include="Assets\Bee\Player\JumpStateMachine.cs" />
+     <Compile Include="Assets\Bee\Raft\RaftController.cs" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.19f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
