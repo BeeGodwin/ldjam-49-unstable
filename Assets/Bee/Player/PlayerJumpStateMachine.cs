@@ -31,7 +31,7 @@ namespace Bee.Player
             switch (_jumpState)
             {
                 case JumpState.Airborne:
-                    if (player.GetVelocity().y <= 0 && player.IsGrounded())
+                    if (player.GetVelocity().y <= 0 && player.IsGrounded()) // timer might be better?
                     {
                         _jumpState = JumpState.Grounded;
                     }

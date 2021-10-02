@@ -14,6 +14,7 @@ namespace Bee.Player
         public float maxSpeed;
         public float accel;
         public float jumpForce;
+        public float moveDamping;
         public float airWalkDamping;
         public float groundProbeLength;
         public Transform groundProbePoint;
@@ -28,13 +29,9 @@ namespace Bee.Player
         void Update()
         {
             _stateMachine.Update(this);
-            
-            var xAxis = Input.GetAxis("Horizontal");
-            var jump = Input.GetButton("Jump");
-            
-            if (jump) HandleJump();
-            
-            if (Math.Abs(xAxis) > 0) HandleMove(xAxis);
+
+            HandleJump();
+            HandleMove();
             
             // we might need a grab key?
         }
@@ -48,21 +45,35 @@ namespace Bee.Player
 
         private void HandleJump()
         {
-            _stateMachine.tryJump(this, jumpForce);
+            var jump = Input.GetButton("Jump");
+            if (jump)
+                _stateMachine.tryJump(this, jumpForce);
         }
 
-        private void HandleMove(float xAxis)
+        private void HandleMove()
         {
-            // flip player if needed
+            // TODO: flip player X if needed
 
-            var moveForce = _stateMachine.GetState() == JumpState.Grounded ? accel : accel * airWalkDamping;
-            
-            _rb.AddForce(new Vector2(xAxis, 0) * moveForce); // should this be relative to the raft?
-            if (_rb.velocity.magnitude > maxSpeed)
+            var xAxis = Input.GetAxis("Horizontal");
+            if (Mathf.Abs(xAxis) > 0)
+            {
+                var moveForce = _stateMachine.GetState() == JumpState.Grounded ? accel : accel * airWalkDamping;
+                _rb.AddForce(new Vector2(xAxis, 0) * moveForce * Time.deltaTime); // should this be relative to the raft?
+                
+            }
+            else
+            {
+                var velocity = _rb.velocity;
+                var difference = -velocity.x * moveDamping * Time.deltaTime;
+                _rb.velocity = new Vector2(velocity.x + difference, velocity.y);
+            }
+
+            if (Mathf.Abs(_rb.velocity.x) > maxSpeed)
             {
                 var cappedVelocity = _rb.velocity.normalized * maxSpeed;
                 _rb.velocity = cappedVelocity;
             }
+            
         }
 
         public bool IsGrounded()

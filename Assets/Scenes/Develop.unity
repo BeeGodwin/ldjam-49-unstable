@@ -476,7 +476,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409126496}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: 0}
+  m_LocalPosition: {x: -3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 862915146}
@@ -907,7 +907,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428210623}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: 0}
+  m_LocalPosition: {x: 3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 768128462}
@@ -1001,10 +1001,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5a291a688214617b22046b8c1aec61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 3
-  accel: 1
-  jumpForce: 100
-  airWalkDamping: 0
+  maxSpeed: 5
+  accel: 60
+  jumpForce: 60
+  moveDamping: 5
+  airWalkDamping: 10
   groundProbeLength: 0.2
   groundProbePoint: {fileID: 460932318}
   jumpMask:
