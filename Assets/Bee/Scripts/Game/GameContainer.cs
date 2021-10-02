@@ -6,7 +6,7 @@ public class GameContainer : MonoBehaviour
 {
     void Start()
     {
-        // install and instantiate dependencies
+        // install and instantiate the scene
     }
 
     // provide container as singleton

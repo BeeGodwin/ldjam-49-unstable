@@ -56,7 +56,7 @@
      <Compile Include="Assets\Bee\Scripts\Ocean\OceanController.cs" />
      <Compile Include="Assets\Bee\Scripts\Game\GameController.cs" />
      <Compile Include="Assets\Bee\Scripts\Game\GameContainer.cs" />
-     <Compile Include="Assets\Bee\Scripts\Player\PlayerControl.cs" />
+     <Compile Include="Assets\Bee\Scripts\Player\PlayerController.cs" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.19f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

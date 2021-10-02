@@ -3,5 +3,6 @@ Logs/
 Packages/
 Temp/
 UserSettings/
+obj/
 *.sln
 .idea/
