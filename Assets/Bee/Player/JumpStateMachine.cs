@@ -17,12 +17,12 @@ namespace Bee.Player
             return _jumpState;
         }
 
-        public void tryJump(IJumper jumper, float jumpForce)
+        public void TryJump(IJumper jumper)
         {
-            if (_jumpState == JumpState.Grounded && jumper.IsGrounded())
+            if (jumper.IsGrounded())
             {
-                _jumpState = JumpState.Airborne;
-                jumper.DoJump(jumpForce);
+                _jumpState = JumpState.Jumping;
+                jumper.DoJump();
             }
         }
 
@@ -50,7 +50,7 @@ namespace Bee.Player
     public interface IJumper
     {
         public bool IsGrounded();
-        public void DoJump(float yVelocity);
+        public void DoJump();
         public Vector2 GetVelocity();
     }
 

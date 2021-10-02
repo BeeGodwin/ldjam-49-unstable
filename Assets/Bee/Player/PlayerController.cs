@@ -39,7 +39,7 @@ namespace Bee.Player
             Gizmos.DrawRay(groundProbePoint.position, direction * groundProbeLength);
         }
 
-        void Update()
+        void FixedUpdate()
         {
             HandleMovement();
             _stateMachine.Update(this);
@@ -57,8 +57,8 @@ namespace Bee.Player
         private void HandleJump()
         {
             var jump = Input.GetButton("Jump");
-            if (jump && _jumpBounceTimer >= jumpBounceTime)
-                _stateMachine.tryJump(this, jumpYVelocity);
+            if (jump && _jumpBounceTimer >= jumpBounceTime && _stateMachine.GetState() == JumpState.Grounded)
+                _stateMachine.TryJump(this);
         }
 
         private void HandleMove()
@@ -99,11 +99,10 @@ namespace Bee.Player
             return Physics2D.Raycast(groundProbePoint.position, Vector2.down, groundProbeLength, jumpMask).collider != null;
         }
 
-        public void DoJump(float yVelocity)
+        public void DoJump()
         {
             _jumpBounceTimer = 0;
-            _rb.AddForce(Vector2.up * yVelocity);
-            // _velocity = new Vector2(_velocity.x, yVelocity);
+            _velocity = new Vector2(_velocity.x, jumpYVelocity);
         }
 
         public Vector2 GetVelocity()
