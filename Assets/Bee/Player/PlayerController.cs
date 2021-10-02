@@ -3,28 +3,28 @@ using UnityEngine;
 
 namespace Bee.Player
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IJumper
     {
-    
-        // make player state machine
-        
         // components
         private Rigidbody2D rb;
-        private PlayerJumpStateMachine state;
+        private PlayerJumpStateMachine stateMachine;
         
         // parameters
         public float maxSpeed;
         public float accel;
         public float jumpForce;
+        public float airWalkDamping;
 
         void Start()
         {
             rb = this.gameObject.transform.GetChild(0).GetComponent<Rigidbody2D>();
-            state = new PlayerJumpStateMachine();
+            stateMachine = new PlayerJumpStateMachine();
         }
 
         void Update()
         {
+            stateMachine.Update(this);
+            
             var xAxis = Input.GetAxis("Horizontal");
             var jump = Input.GetButton("Jump");
             
@@ -37,22 +37,31 @@ namespace Bee.Player
 
         private void HandleJump()
         {
-            // consult state machine
-            // changes velocity
-            rb.AddForce(new Vector2(0, jumpForce));
+            stateMachine.tryJump(this, jumpForce);
         }
 
         private void HandleMove(float xAxis)
         {
-            // consult state machine
             // flip player if needed
+
+            var moveForce = stateMachine.GetState() == JumpState.Grounded ? jumpForce : jumpForce * airWalkDamping;
             
-            rb.AddForce(new Vector2(xAxis, 0) * accel); // should this be relative to the raft?
+            rb.AddForce(new Vector2(xAxis, 0) * moveForce); // should this be relative to the raft?
             if (rb.velocity.magnitude > maxSpeed)
             {
                 var cappedVelocity = rb.velocity.normalized * maxSpeed;
                 rb.velocity = cappedVelocity;
             }
+        }
+
+        public bool IsGrounded()
+        {
+            return true;
+        }
+
+        public void doJump(float withJumpForce)
+        {
+            rb.AddForce(new Vector2(0, withJumpForce));
         }
     }
 }
