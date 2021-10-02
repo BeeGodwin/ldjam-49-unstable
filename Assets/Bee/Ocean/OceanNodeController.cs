@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Bee.Scripts.Ocean
+namespace Bee.Ocean
 {
     public class OceanNodeController : MonoBehaviour
     {
@@ -9,3 +9,4 @@ namespace Bee.Scripts.Ocean
         // method to set X position of node
     }
 }
+

@@ -1,13 +1,16 @@
 using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace Bee.Player
+{
+    public class PlayerController : MonoBehaviour
     {
     
         // make player state machine
         
         // components
         private Rigidbody2D rb;
+        private PlayerJumpStateMachine state;
         
         // parameters
         public float maxSpeed;
@@ -17,6 +20,7 @@ public class PlayerController : MonoBehaviour
         void Start()
         {
             rb = this.gameObject.transform.GetChild(0).GetComponent<Rigidbody2D>();
+            state = new PlayerJumpStateMachine();
         }
 
         void Update()
@@ -43,7 +47,7 @@ public class PlayerController : MonoBehaviour
             // consult state machine
             // flip player if needed
             
-            rb.AddForce(new Vector2(xAxis, 0) * accel);
+            rb.AddForce(new Vector2(xAxis, 0) * accel); // should this be relative to the raft?
             if (rb.velocity.magnitude > maxSpeed)
             {
                 var cappedVelocity = rb.velocity.normalized * maxSpeed;
@@ -51,4 +55,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+}
 
