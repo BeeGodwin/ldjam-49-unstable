@@ -55,6 +55,14 @@ namespace Bee.Sky
                 Debug.Log($"{gameObject.name} has set at {_end}");
                 _running = false;
             }
+
+            if (_running)
+            {
+                var t = 1 - _journeyTimer / _journeyTime;
+                var y = curve.Evaluate(t);
+                var x = _end.position.x * t + _start.position.x * (1 - t);
+                transform.position = new Vector3(x, y, 0);
+            }
         }
 
         // those coroutines: per frame, work out your t. t takes place over 3 hours, so time / 2
