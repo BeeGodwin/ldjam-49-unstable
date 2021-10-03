@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Bee.Ocean
 {
-    public class OceanController : MonoBehaviour
+    public class OceanController : MonoBehaviour, IWeather
     {
         public float wavePeriodFactor;
         public float waveLengthFactor;
@@ -47,6 +47,11 @@ namespace Bee.Ocean
                 _nodes.Add(go.GetComponent<OceanNodeController>());
                 xPos += nodeInterval;
             }
+        }
+
+        public void SetWeatherConditions(WeatherConditions conditions)
+        {
+            Debug.Log($"Setting conditions to {conditions}");
         }
     }
 }
