@@ -66,6 +66,7 @@
      <Compile Include="Assets\Bee\Sky\RainController.cs" />
      <Compile Include="Assets\Bee\Sky\DayNightController.cs" />
      <Compile Include="Assets\Bee\Sky\CloudController.cs" />
+     <Compile Include="Assets\Bee\Sky\CelestialBody.cs" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.19f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

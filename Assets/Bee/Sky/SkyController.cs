@@ -15,7 +15,6 @@ namespace Bee.Sky
             _rain = GetComponentInChildren<RainController>();
             _wind = GetComponentInChildren<WindController>();
             _dayNight = GetComponentInChildren<DayNightController>();
-            _dayNight.StartDay();
         }
 
         public void SetWeatherConditions(WeatherConditions conditions, float time)
