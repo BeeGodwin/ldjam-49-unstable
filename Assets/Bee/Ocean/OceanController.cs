@@ -9,6 +9,10 @@ namespace Bee.Ocean
         public float waveLengthFactor;
         public float waveMagnitude;
 
+        private float _periodFactor;
+        private float _lengthFactor;
+        private float _magnitude;
+
         public float oceanExtent;
         public float nodeScale;
         public float nodeInterval;
@@ -20,18 +24,21 @@ namespace Bee.Ocean
         public void Start()
         {
             InstantiateNodes();
+            _periodFactor = wavePeriodFactor;
+            _lengthFactor = waveLengthFactor;
+            _magnitude = waveMagnitude;
         }
 
         public void Update()
         {
-            var radians = (Time.time * wavePeriodFactor) % 360 * Mathf.Deg2Rad;
+            var radians = (Time.time * _periodFactor) % 360 * Mathf.Deg2Rad;
             
             _nodes.ForEach(node =>
             {
                 var x = node.transform.position.x;
-                var positionModifier = radians + x * waveLengthFactor;
+                var positionModifier = radians + x * _lengthFactor;
                 var sin = Mathf.Sin(positionModifier);
-                var y = sin * waveMagnitude;
+                var y = sin * _magnitude;
                 node.transform.position = new Vector2(x, y + yPos);
             });
         }
@@ -51,7 +58,25 @@ namespace Bee.Ocean
 
         public void SetWeatherConditions(WeatherConditions conditions)
         {
-            Debug.Log($"Setting conditions to {conditions}");
+            // Debug.Log($"Setting conditions to {conditions}");
+
+            if (conditions == WeatherConditions.MildSwell)
+            {
+                _periodFactor = wavePeriodFactor;
+                _lengthFactor = waveLengthFactor;
+                _magnitude = waveMagnitude;
+            } else if (conditions == WeatherConditions.BigSwell)
+            {
+                _periodFactor = (float) (wavePeriodFactor * 1.25);
+                _lengthFactor = (float) (waveLengthFactor * 1.25);
+                _magnitude = waveMagnitude * 2;
+            }
+            else
+            {
+                _periodFactor = (float) (wavePeriodFactor / 1.25);
+                _lengthFactor = (float) (waveLengthFactor / 1.25);
+                _magnitude = waveMagnitude / 2;
+            }
         }
     }
 }
