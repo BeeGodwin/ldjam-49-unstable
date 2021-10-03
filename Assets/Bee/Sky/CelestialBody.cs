@@ -12,6 +12,7 @@ namespace Bee.Sky
         private bool _ascending;
 
         private bool _running;
+        private bool _rising;
         
         private Transform _start;
         private Transform _end;
@@ -20,11 +21,11 @@ namespace Bee.Sky
         public void StartJourney(Transform easternHorizon, Transform westernHorizon, Transform zenith, float time)
         {
             _running = true;
+            _ascending = true;
             transform.position = easternHorizon.position;
             _start = easternHorizon;
             _end = zenith;
             _setAt = westernHorizon;
-            _ascending = true;
             _journeyTime = time / 2;
             _journeyTimer = time / 2;
             Debug.Log($"{gameObject.name} rose at {_start} and is ascending");
@@ -59,14 +60,11 @@ namespace Bee.Sky
             if (_running)
             {
                 var t = 1 - _journeyTimer / _journeyTime;
-                var y = curve.Evaluate(t);
+                var yT = _ascending ? curve.Evaluate(t) : curve.Evaluate(1 - t);
+                var y = _ascending ? _end.position.y * yT + _start.position.y * (1 - yT) : _end.position.y * (1 - yT) + _start.position.y * yT;
                 var x = _end.position.x * t + _start.position.x * (1 - t);
                 transform.position = new Vector3(x, y, 0);
             }
         }
-
-        // those coroutines: per frame, work out your t. t takes place over 3 hours, so time / 2
-        // position ought to be (1 - t) * horizon Pos + t * zenithPos, per coordinate
-        // sigh ok could do it with Update and timers
     }
 }

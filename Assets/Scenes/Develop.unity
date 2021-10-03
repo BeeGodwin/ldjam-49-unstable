@@ -6279,7 +6279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbaefe2f2e8704aa8bddc536fee1fbf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dayLength: 180
+  dayLength: 120
   forecast: 2
   accuracy: 0.75
 --- !u!1001 &1559377885
