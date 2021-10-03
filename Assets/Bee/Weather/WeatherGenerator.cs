@@ -9,57 +9,42 @@ namespace Bee.Weather
         {
             var rain = GetRain(forecast);
             var wind = GetWind(forecast);
-            var swell = GetSwell(forecast);
 
-            return rain | wind | swell;
+            return new WeatherConditions(rain, wind) ;
         }
 
-        private WeatherConditions GetRain(Forecast forecast)
+        private Rain GetRain(Forecast forecast)
         {
             var rainChance = ChanceOfRain(forecast);
             var roll = Random.Range(0f, 1f);
 
             if (roll > rainChance)
-                return WeatherConditions.None;
+                return Rain.None;
             
             if (roll <= rainChance / 3)
-                return WeatherConditions.TorrentialRain;
+                return Rain.TorrentialRain;
             
             if (roll <= rainChance / 2)
-                return WeatherConditions.HardRain;
+                return Rain.HardRain;
             
-            return WeatherConditions.LightRain;
+            return Rain.LightRain;
         }
         
-        private WeatherConditions GetWind(Forecast forecast)
+        private Wind GetWind(Forecast forecast)
         {
             var windChance = ChanceOfWind(forecast);
             var roll = Random.Range(0f, 1f);
 
             if (roll > windChance)
-                return WeatherConditions.None;
+                return Wind.None;
             
             if (roll <= windChance / 3)
-                return WeatherConditions.Gale;
+                return Wind.Gale;
             
             if (roll <= windChance / 2)
-                return WeatherConditions.Windy;
+                return Wind.Windy;
             
-            return WeatherConditions.Breezy;
-        }
-        
-        private WeatherConditions GetSwell(Forecast forecast)
-        {
-            var windChance = ChanceOfSwell(forecast);
-            var roll = Random.Range(0f, 1f);
-
-            if (roll > windChance)
-                return WeatherConditions.None;
-            
-            if (roll <= windChance / 2)
-                return WeatherConditions.BigSwell;
-
-            return WeatherConditions.MildSwell;
+            return Wind.Breezy;
         }
 
         private float ChanceOfRain(Forecast forecast)
@@ -94,24 +79,6 @@ namespace Bee.Weather
                     return 0.5f;
                 case Forecast.Storms:
                     return 1.0f;
-            }
-            return 0f;
-        }
-        
-        private float ChanceOfSwell(Forecast forecast)
-        {
-            switch (forecast)
-            {
-                case Forecast.Dry:
-                    return 0.05f;
-                case Forecast.Fair:
-                    return 0.20f;
-                case Forecast.Change:
-                    return 0.25f;
-                case Forecast.Rain:
-                    return 0.25f;
-                case Forecast.Storms:
-                    return 0.5f;
             }
             return 0f;
         }

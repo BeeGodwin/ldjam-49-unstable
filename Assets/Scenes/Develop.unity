@@ -714,8 +714,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbaefe2f2e8704aa8bddc536fee1fbf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dayLength: 180
-  forecast: 1
+  dayLength: 120
+  forecast: 2
 --- !u!1001 &1559377885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -909,7 +909,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wavePeriodFactor: 90
   waveLengthFactor: 0.4
-  waveMagnitude: 0.7
+  maxWaveMagnitude: 1
+  adjustTime: 5
   oceanExtent: 12
   nodeScale: 1
   nodeInterval: 1.5

@@ -31,7 +31,8 @@ namespace Bee.Weather
 
         private void StartDay()
         {
-            Debug.Log($"Starting day with forecast {forecast} and ocean {_ocean}");
+            // TODO: control the sky
+            Debug.Log($"Starting day with forecast {forecast}");
             GenerateWeather();
             SetWeather(_hours[0].Conditions);
         }
@@ -54,6 +55,7 @@ namespace Bee.Weather
                 _hourIndex = thisHourIndex;
                 SetWeather(_hours[_hourIndex].Conditions);
             }
+            // TODO: end the day, generate a new one
         }
 
         private void SetWeather(WeatherConditions conditions)
@@ -77,18 +79,32 @@ public enum Forecast
     Storms
 }
 
-[Flags]
-public enum WeatherConditions
+public struct WeatherConditions
 {
-    None = 0b_0000_0000,
-    LightRain = 0b_0000_0001,
-    HardRain = 0b_0000_0010,
-    TorrentialRain = 0b_0000_0100,
-    Breezy = 0b_0000_1000,
-    Windy = 0b_0001_0000,
-    Gale = 0b_0010_0000,
-    MildSwell = 0b_0100_0000,
-    BigSwell = 0b_1000_0000
+    public Rain Rain;
+    public Wind Wind;
+
+    public WeatherConditions(Rain rain, Wind wind)
+    {
+        Rain = rain;
+        Wind = wind;
+    }
+}
+
+public enum Rain
+{
+    None,
+    LightRain,
+    HardRain,
+    TorrentialRain
+}
+
+public enum Wind
+{
+    None,
+    Breezy,
+    Windy,
+    Gale
 }
 
 struct Hour
