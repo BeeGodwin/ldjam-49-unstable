@@ -11,6 +11,8 @@ namespace Bee.Weather
         public Forecast forecast;
 
         private IWeather _ocean;
+
+        private WeatherGenerator _generator;
         
         private float _dayTimer = 0;
         private int _dayCounter = 0;
@@ -21,6 +23,7 @@ namespace Bee.Weather
 
         public void Start()
         {
+            _generator = new WeatherGenerator();
             _hourLength = dayLength / 12;
             _ocean = GameObject.Find("Ocean").GetComponent<OceanController>();
             StartDay();
@@ -29,17 +32,16 @@ namespace Bee.Weather
         private void StartDay()
         {
             Debug.Log($"Starting day with forecast {forecast} and ocean {_ocean}");
-            GenerateWeather(forecast);
+            GenerateWeather();
             SetWeather(_hours[0].Conditions);
         }
 
-        private void GenerateWeather(Forecast forecast)
+        private void GenerateWeather()
         {
             _hours = new List<Hour>();
             for (int i = 0; i < 12; i++)
             {
-                var weatherConditions = WeatherConditions.MildSwell | WeatherConditions.Breezy;
-                _hours.Add(new Hour(weatherConditions));
+                _hours.Add(new Hour(_generator.GetConditions(forecast)));
             }
         }
 

@@ -58,8 +58,6 @@ namespace Bee.Ocean
 
         public void SetWeatherConditions(WeatherConditions conditions)
         {
-            // Debug.Log($"Setting conditions to {conditions}");
-
             if (conditions == WeatherConditions.MildSwell)
             {
                 _periodFactor = wavePeriodFactor;
@@ -67,15 +65,15 @@ namespace Bee.Ocean
                 _magnitude = waveMagnitude;
             } else if (conditions == WeatherConditions.BigSwell)
             {
-                _periodFactor = (float) (wavePeriodFactor * 1.25);
-                _lengthFactor = (float) (waveLengthFactor * 1.25);
-                _magnitude = waveMagnitude * 2;
+                _periodFactor = wavePeriodFactor * 1.25f;
+                _lengthFactor = waveLengthFactor * 1.25f;
+                _magnitude = waveMagnitude * 2f;
             }
             else
             {
-                _periodFactor = (float) (wavePeriodFactor / 1.25);
-                _lengthFactor = (float) (waveLengthFactor / 1.25);
-                _magnitude = waveMagnitude / 2;
+                _periodFactor = wavePeriodFactor / 1.25f;
+                _lengthFactor = waveLengthFactor / 1.25f;
+                _magnitude = waveMagnitude / 2f;
             }
         }
     }
