@@ -78,7 +78,7 @@ namespace Bee.Sky
                     break;
             }
             
-            Debug.Log($"DEBUG:WEATHER:RAIN: {_rain} and {_wind}. angleDelta: {_angleDelta}. RoTDelta: {_roTDelta}.");
+            // Debug.Log($"DEBUG:WEATHER:RAIN: {_rain} and {_wind}. angleDelta: {_angleDelta}. RoTDelta: {_roTDelta}.");
         }
     }
 }

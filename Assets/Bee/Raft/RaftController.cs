@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
+using Bee.Sky;
 using UnityEngine;
 
-public class RaftController : MonoBehaviour
+namespace Bee.Raft
 {
-    // Start is called before the first frame update
-    void Start()
+    public class RaftController : MonoBehaviour, IBlowable
     {
+        private Rigidbody2D _mastRb;
+        void Start()
+        {
+            _mastRb = GetComponentInChildren<Rigidbody2D>();
+        }
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void ApplyWindForce(float force)
+        {
+            _mastRb.AddForce(Vector2.right * force);
+        }
     }
 }
