@@ -11,7 +11,6 @@ namespace Bee.Sky
         
         void Start()
         {
-            // get child controllers
             _clouds = GetComponentInChildren<CloudController>();
             _rain = GetComponentInChildren<RainController>();
             _wind = GetComponentInChildren<WindController>();
@@ -19,12 +18,6 @@ namespace Bee.Sky
             _dayNight.StartDay();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-        
         public void SetWeatherConditions(WeatherConditions conditions, float time)
         {
             // Debug.Log($"Sky got rain {conditions.Rain}, wind {conditions.Wind}");

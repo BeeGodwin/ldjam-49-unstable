@@ -6,6 +6,7 @@ namespace Bee.Raft
     public class RaftController : MonoBehaviour, IBlowable
     {
         private Rigidbody2D _mastRb;
+
         void Start()
         {
             _mastRb = GetComponentInChildren<Rigidbody2D>();
