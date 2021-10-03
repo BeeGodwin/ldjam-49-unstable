@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Bee.Ocean;
+using Bee.Sky;
 using UnityEngine;
 
 namespace Bee.Weather
@@ -9,7 +9,8 @@ namespace Bee.Weather
     {
         public float dayLength;
         public Forecast forecast;
-
+        public float accuracy;
+        
         private IWeather _ocean;
         private IWeather _sky;
 
@@ -18,7 +19,7 @@ namespace Bee.Weather
         private float _dayTimer = 0;
         private int _dayCounter = 0;
         private float _hourLength;
-        private int _hourIndex = 0;
+        private int _hourIndex = -1;
         private List<Hour> _hours;
 
 
@@ -27,19 +28,31 @@ namespace Bee.Weather
             _generator = new WeatherGenerator();
             _hourLength = dayLength / 12;
             _ocean = GameObject.Find("Ocean").GetComponent<OceanController>();
+            _sky = GameObject.Find("Sky").GetComponent<SkyController>();
             StartDay();
         }
 
         private void StartDay()
         {
-            // TODO: control the sky
-            Debug.Log($"Starting day with forecast {forecast}");
+            forecast = CheckForecast();
             GenerateWeather();
-            SetWeather(_hours[0].Conditions);
+            Debug.Log($"Starting day {_dayCounter} with forecast {forecast}");
+        }
+
+        private Forecast CheckForecast()
+        {
+            var roll = Random.Range(0f, 1f);
+            if (roll < accuracy) return forecast;
+
+            if (forecast == Forecast.Dry) return Forecast.Fair;
+            if (forecast == Forecast.Storms) return Forecast.Rain;
+            var changeBy = Random.Range(0f, 1f) < 0.5f ? 1 : -1;
+            return (Forecast) ((int) forecast + changeBy);
         }
 
         private void GenerateWeather()
         {
+            
             _hours = new List<Hour>();
             for (int i = 0; i < 12; i++)
             {
@@ -51,17 +64,25 @@ namespace Bee.Weather
         {
             _dayTimer += Time.deltaTime;
             var thisHourIndex = (int)Mathf.Floor(_dayTimer / _hourLength);
+            
             if (thisHourIndex != _hourIndex)
             {
-                _hourIndex = thisHourIndex;
+                _hourIndex++;
+                if (_hourIndex >= _hours.Count)
+                {
+                    _dayCounter += 1;
+                    _dayTimer = 0f;
+                    _hourIndex = 0;
+                    StartDay(); // TODO: change forecast here
+                }
                 SetWeather(_hours[_hourIndex].Conditions);
             }
-            // TODO: end the day, generate a new one
         }
 
         private void SetWeather(WeatherConditions conditions)
         {
             _ocean.SetWeatherConditions(conditions, _hourLength);
+            _sky.SetWeatherConditions(conditions, _hourLength);
         }
     }
 }
@@ -73,11 +94,11 @@ public interface IWeather
 
 public enum Forecast
 {
-    Dry,
-    Fair,
-    Change,
-    Rain,
-    Storms
+    Dry = 0,
+    Fair = 1,
+    Change = 2,
+    Rain = 3,
+    Storms = 4
 }
 
 public struct WeatherConditions
@@ -108,7 +129,7 @@ public enum Wind
     Gale
 }
 
-struct Hour
+readonly struct Hour
 {
     public Hour(WeatherConditions weather)
     {

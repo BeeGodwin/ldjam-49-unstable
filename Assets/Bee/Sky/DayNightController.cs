@@ -15,5 +15,14 @@ namespace Bee.Sky
         {
         
         }
+
+        public void StartDay()
+        {
+        }
+
+        public void StartNextHour(float length)
+        {
+            
+        }
     }
 }

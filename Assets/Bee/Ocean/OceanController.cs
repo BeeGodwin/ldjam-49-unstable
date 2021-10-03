@@ -9,17 +9,17 @@ namespace Bee.Ocean
         public float wavePeriodFactor;
         public float waveLengthFactor;
         public float maxWaveMagnitude;
-        public float adjustTime;
-
+        
         private float _periodFactor;
         private float _lengthFactor;
         private float _magnitude;
 
-        private float _periodDelta;
-        private float _lengthDelta;
+        // private float _periodDelta;
+        // private float _lengthDelta;
         private float _magnitudeDelta;
         private float _adjustTimer;
-
+        private float _adjustTime;
+        
         public float oceanExtent;
         public float nodeScale;
         public float nodeInterval;
@@ -42,9 +42,9 @@ namespace Bee.Ocean
             if (_adjustTimer > 0f)
             {
                 _adjustTimer -= Time.deltaTime;
-                var tDelta = Time.deltaTime / adjustTime;
-                _periodFactor += _periodDelta * tDelta;
-                _lengthFactor += _lengthDelta * tDelta;
+                var tDelta = Time.deltaTime / _adjustTime;
+                // _periodFactor += _periodDelta * tDelta;
+                // _lengthFactor += _lengthDelta * tDelta;
                 _magnitude += _magnitudeDelta * tDelta;
             }
 
@@ -75,16 +75,16 @@ namespace Bee.Ocean
 
         public void SetWeatherConditions(WeatherConditions conditions, float time)
         {
-            // TODO: maybe make adjust time based on time
+            _adjustTime = time / 2;
+            _adjustTimer = time / 2;
             
-            _adjustTimer = adjustTime;
             var rainFactor = RainFactor(conditions);
             var windFactor = WindFactor(conditions);
             
             var targetMagnitude = (rainFactor + windFactor) * maxWaveMagnitude;
             _magnitudeDelta = targetMagnitude - _magnitude;
             
-            Debug.Log($"DEBUG:WEATHER:OCEAN target magnitude; {targetMagnitude}, delta; {_magnitudeDelta}; current magnitude {_magnitude}. Transition over {_adjustTimer} secs.");
+            // Debug.Log($"DEBUG:WEATHER:OCEAN target magnitude; {targetMagnitude}, delta; {_magnitudeDelta}; current magnitude {_magnitude}. Transition over {_adjustTimer} secs.");
         }
 
         private float RainFactor(WeatherConditions conditions)

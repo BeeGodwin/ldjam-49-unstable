@@ -4,7 +4,7 @@ namespace Bee.Sky
 {
     public class SkyController : MonoBehaviour, IWeather
     {
-        private CloudController _clouds;
+        private IWeather _clouds;
         private RainController _rain;
         private WindController _wind;
         private DayNightController _dayNight;
@@ -16,6 +16,7 @@ namespace Bee.Sky
             _rain = GetComponentInChildren<RainController>();
             _wind = GetComponentInChildren<WindController>();
             _dayNight = GetComponentInChildren<DayNightController>();
+            _dayNight.StartDay();
         }
 
         // Update is called once per frame
@@ -23,11 +24,14 @@ namespace Bee.Sky
         {
         
         }
-
-
+        
         public void SetWeatherConditions(WeatherConditions conditions, float time)
         {
-            throw new System.NotImplementedException();
+            // Debug.Log($"Sky got rain {conditions.Rain}, wind {conditions.Wind}");
+            _dayNight.StartNextHour(time);
+            _clouds.SetWeatherConditions(conditions, time);
+            _rain.SetRainConditions(conditions, time);
+            _wind.SetWindConditions(conditions.Wind, time);
         }
     }
 }

@@ -15,5 +15,9 @@ namespace Bee.Sky
         {
         
         }
+
+        public void SetWindConditions(Wind wind, float time)
+        {
+        }
     }
 }
