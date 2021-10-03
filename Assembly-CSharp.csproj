@@ -61,6 +61,11 @@
      <Compile Include="Assets\Bee\Raft\RaftController.cs" />
      <Compile Include="Assets\Bee\Weather\WeatherController.cs" />
      <Compile Include="Assets\Bee\Weather\WeatherGenerator.cs" />
+     <Compile Include="Assets\Bee\Sky\WindController.cs" />
+     <Compile Include="Assets\Bee\Sky\SkyController.cs" />
+     <Compile Include="Assets\Bee\Sky\RainController.cs" />
+     <Compile Include="Assets\Bee\Sky\SunController.cs" />
+     <Compile Include="Assets\Bee\Sky\CloudController.cs" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.19f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

@@ -11,6 +11,7 @@ namespace Bee.Weather
         public Forecast forecast;
 
         private IWeather _ocean;
+        private IWeather _sky;
 
         private WeatherGenerator _generator;
         
