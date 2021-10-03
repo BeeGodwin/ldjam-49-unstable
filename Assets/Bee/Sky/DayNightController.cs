@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Bee.Sky
 {
-    public class CloudController : MonoBehaviour
+    public class DayNightController : MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()

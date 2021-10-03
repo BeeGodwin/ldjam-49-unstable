@@ -61,14 +61,14 @@ namespace Bee.Weather
 
         private void SetWeather(WeatherConditions conditions)
         {
-            _ocean.SetWeatherConditions(conditions);
+            _ocean.SetWeatherConditions(conditions, _hourLength);
         }
     }
 }
 
 public interface IWeather
 {
-    public void SetWeatherConditions(WeatherConditions conditions);
+    public void SetWeatherConditions(WeatherConditions conditions, float time);
 }
 
 public enum Forecast

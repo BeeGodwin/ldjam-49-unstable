@@ -73,8 +73,10 @@ namespace Bee.Ocean
             }
         }
 
-        public void SetWeatherConditions(WeatherConditions conditions)
+        public void SetWeatherConditions(WeatherConditions conditions, float time)
         {
+            // TODO: maybe make adjust time based on time
+            
             _adjustTimer = adjustTime;
             var rainFactor = RainFactor(conditions);
             var windFactor = WindFactor(conditions);
@@ -82,9 +84,7 @@ namespace Bee.Ocean
             var targetMagnitude = (rainFactor + windFactor) * maxWaveMagnitude;
             _magnitudeDelta = targetMagnitude - _magnitude;
             
-            Debug.Log($"I have a rainFactor of {rainFactor} and a windFactor of {windFactor}. My target magnitude is {targetMagnitude}");
-
-            Debug.Log($"That's a delta of {_magnitudeDelta} against an original magnitude of {_magnitude} over {_adjustTimer}");
+            Debug.Log($"DEBUG:WEATHER:OCEAN target magnitude; {targetMagnitude}, delta; {_magnitudeDelta}; current magnitude {_magnitude}. Transition over {_adjustTimer} secs.");
         }
 
         private float RainFactor(WeatherConditions conditions)
