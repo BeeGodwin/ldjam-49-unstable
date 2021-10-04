@@ -12,13 +12,12 @@ namespace Bee.Ocean
         public float waveLengthFactor;
         public float maxWaveMagnitude;
         public float depthLevels;
-        
+        public float depthLevelWidth;
         
         private float _periodFactor;
         private float _lengthFactor;
         private float _magnitude;
         
-
         // private float _periodDelta;
         // private float _lengthDelta;
         private float _magnitudeDelta;
@@ -110,12 +109,12 @@ namespace Bee.Ocean
                 var lineColor = new Color(col.r * t, col.b * t, col.g * t, 1f);
                 line.startColor = lineColor;
                 line.endColor = lineColor;
-                line.widthMultiplier = 1.75f;
-                var positions = drawPositions.ConvertAll(v3 => new Vector3(v3.x - windFactor * i, v3.y - i + 0.75f, v3.z));
+                line.widthMultiplier = depthLevelWidth * 2;
+                var positions = drawPositions.ConvertAll(v3 => new Vector3(v3.x - windFactor * i, v3.y - i * depthLevelWidth, v3.z));
                 line.SetPositions(positions.ToArray());
             }
             _surfaceLine.positionCount = drawPositions.Count;
-            _surfaceLine.SetPositions(drawPositions.ToArray()); // TODO: could do with setting off a colour gradient
+            _surfaceLine.SetPositions(drawPositions.ToArray());
         }
 
         public void SetWeatherConditions(WeatherConditions conditions, float time)
