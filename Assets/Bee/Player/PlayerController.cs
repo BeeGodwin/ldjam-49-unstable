@@ -114,7 +114,7 @@ namespace Bee.Player
             throw new NotImplementedException();
         }
 
-        public void StartGame()
+        public void ResetGame()
         {
             throw new NotImplementedException();
         }

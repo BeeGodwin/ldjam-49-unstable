@@ -96,7 +96,7 @@ namespace Bee.Weather
             throw new System.NotImplementedException();
         }
 
-        public void StartGame()
+        public void ResetGame()
         {
             throw new System.NotImplementedException();
         }
