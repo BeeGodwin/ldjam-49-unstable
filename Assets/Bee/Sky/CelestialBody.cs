@@ -12,7 +12,6 @@ namespace Bee.Sky
         private bool _ascending;
 
         private bool _running;
-        private bool _rising;
         
         private Transform _start;
         private Transform _end;
@@ -28,12 +27,12 @@ namespace Bee.Sky
             _setAt = westernHorizon;
             _journeyTime = time / 2;
             _journeyTimer = time / 2;
-            Debug.Log($"{gameObject.name} rose at {_start} and is ascending");
+            // Debug.Log($"{gameObject.name} rose at {_start} and is ascending");
         }
 
         public void Update()
         {
-            if (!_running) return;
+            if (!_running) return; // cheesy hack to prevent this running on 1st frame and breaking for some reason
             
             if (_journeyTimer > 0)
             {
@@ -47,13 +46,13 @@ namespace Bee.Sky
                 transform.position = _end.position;
                 _start = _end;
                 _end = _setAt;
-                Debug.Log($"{gameObject.name} has reached {_start} and is descending");
+                // Debug.Log($"{gameObject.name} has reached {_start} and is descending");
             }
 
             if (_journeyTimer <= 0f)
             {
                 transform.position = _end.position;
-                Debug.Log($"{gameObject.name} has set at {_end}");
+                // Debug.Log($"{gameObject.name} has set at {_end}");
                 _running = false;
             }
 
