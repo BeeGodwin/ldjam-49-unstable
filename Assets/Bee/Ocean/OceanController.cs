@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Bee.Sky;
 using UnityEngine;
 
@@ -26,11 +27,13 @@ namespace Bee.Ocean
         public float nodeInterval;
         public GameObject oceanNodePrefab;
         private List<OceanNodeController> _nodes = new List<OceanNodeController>();
+        private LineRenderer _line;
         
         public float yPos;
 
         public void Start()
         {
+            _line = GetComponent<LineRenderer>();
             InstantiateNodes();
             _periodFactor = wavePeriodFactor;
             _lengthFactor = waveLengthFactor;
@@ -59,6 +62,8 @@ namespace Bee.Ocean
                 var y = sin * _magnitude;
                 node.transform.position = new Vector2(x, y + yPos);
             });
+
+            DrawSurface();
         }
 
         private void InstantiateNodes()
@@ -72,6 +77,13 @@ namespace Bee.Ocean
                 _nodes.Add(go.GetComponent<OceanNodeController>());
                 xPos += nodeInterval;
             }
+        }
+
+        private void DrawSurface()
+        {
+            var drawPositions = _nodes.ConvertAll(node => node.transform.GetChild(1).transform.position);
+            _line.positionCount = drawPositions.Count;
+            _line.SetPositions(drawPositions.ToArray());
         }
 
         public void SetWeatherConditions(WeatherConditions conditions, float time)
