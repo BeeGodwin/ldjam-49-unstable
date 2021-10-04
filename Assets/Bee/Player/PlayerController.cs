@@ -30,8 +30,8 @@ namespace Bee.Player
         
         void Start()
         {
-            _startPos = transform.position;
             _rb = this.gameObject.transform.GetChild(0).GetComponent<Rigidbody2D>();
+            _startPos = _rb.transform.position;
             _stateMachine = new JumpStateMachine();
             _jumpBounceTimer = 0;
         }
@@ -118,7 +118,8 @@ namespace Bee.Player
 
         public void ResetGame()
         {
-            transform.position = _startPos;
+            Debug.Log("reset player");
+            _rb.transform.position = _startPos;
         }
     }
 }

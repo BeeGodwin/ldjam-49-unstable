@@ -103,7 +103,7 @@ namespace Bee.Ocean
 
         private void DrawOcean()
         {
-            var drawPositions = _nodes.ConvertAll(node => node.transform.GetChild(1).transform.position);
+            var drawPositions = _nodes.ConvertAll(node => node.transform.GetChild(0).transform.position);
 
             var windFactor = WindFactor(_conditions);
             

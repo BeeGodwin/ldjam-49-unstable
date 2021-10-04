@@ -7518,18 +7518,21 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Unstable Voyage
+  m_Text: 'UNSTABLE VOYAGE
 
-    Cursors / WASD to move
+    keep your stuff on the raft!
 
-    Space to Jump
+    cursors / wasd
+    to move
 
-    Refresh
-    Page If (When!) It Janks Out
+    space to jump
 
-    Forecast is Stormy!
+    refresh page if (when!) it janks out
 
-    Press Enter To Start'
+    FORECAST
+    IS STORMY!
+
+    PrEsS EnTeR To StArT'
 --- !u!222 &1915522526
 CanvasRenderer:
   m_ObjectHideFlags: 0

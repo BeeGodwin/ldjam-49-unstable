@@ -1,12 +1,20 @@
+using System;
+using Bee.Game;
 using UnityEngine;
 
 namespace Bee.Ocean
 {
     public class OceanNodeController : MonoBehaviour
     {
-        // method to set Y position of node
-    
-        // method to set X position of node
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            var go = other.gameObject;
+            if (go.name == "PlayerBody")
+            {
+                var control = GameObject.Find("GameControl").GetComponent<GameController>();
+                control.SetGameLost();
+            }
+        }
     }
 }
 

@@ -90,7 +90,7 @@ namespace Bee.Game
         {
             SetGameOver(true);
             _ui.gameObject.SetActive(true);
-            _panelText.text = "LOSER. Press Enter to restart";
+            _panelText.text = "Awwww crap, you drowned. \nYes, it's harsh, NGL.\nDidn't have time to make a swimming feature tho.\nPress Enter to restart";
         }
 
         public void SetGameWon()
@@ -116,6 +116,5 @@ namespace Bee.Game
         public void PauseGame();
         public void ResetGame();
     }
-
 }
 
