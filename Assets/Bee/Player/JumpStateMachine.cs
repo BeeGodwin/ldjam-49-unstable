@@ -29,6 +29,7 @@ namespace Bee.Player
                 case JumpState.Airborne:
                     if (jumper.IsGrounded())
                     {
+                        jumper.HasLanded();
                         _jumpState = JumpState.Grounded;
                     }
                     break;
@@ -45,6 +46,7 @@ namespace Bee.Player
     public interface IJumper
     {
         public bool IsGrounded();
+        public void HasLanded();
     }
 
     public enum JumpState

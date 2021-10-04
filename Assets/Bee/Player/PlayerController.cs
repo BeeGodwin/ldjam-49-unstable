@@ -10,7 +10,9 @@ namespace Bee.Player
         // dependencies
         private Rigidbody2D _rb;
         private JumpStateMachine _stateMachine;
-        
+        private SpriteRenderer _rend;
+        private Animator _anim;
+
         // parameters
         public float maxSpeed;
         public float accel;
@@ -22,15 +24,26 @@ namespace Bee.Player
         public float groundProbeLength;
         public Transform groundProbePoint;
         public LayerMask jumpMask;
+
+        // public AnimationClip idleAnim;
+        // public AnimationClip jumpAnim;
+        // public AnimationClip runAnim;
         
         // memo
         private Vector2 _velocity;
         private float _jumpBounceTimer;
         private Vector2 _startPos;
-        
+        // private bool _facingRight = true;
+        private static readonly int Velocity = Animator.StringToHash("velocity");
+        private static readonly int Jump = Animator.StringToHash("jump");
+        private static readonly int Landed = Animator.StringToHash("landed");
+
         void Start()
         {
-            _rb = this.gameObject.transform.GetChild(0).GetComponent<Rigidbody2D>();
+            var body = gameObject.transform.GetChild(0);
+            _rb = body.GetComponent<Rigidbody2D>();
+            _rend = body.GetComponent<SpriteRenderer>();
+            _anim = body.GetComponent<Animator>();
             _startPos = _rb.transform.position;
             _stateMachine = new JumpStateMachine();
             _jumpBounceTimer = 0;
@@ -54,7 +67,17 @@ namespace Bee.Player
             _velocity = _rb.velocity;
             var x = VelocityXFromMove();
             var y = VelocityYFromJump();
+            HandleFacing(x);
             _rb.velocity = new Vector2(x, y);
+            _anim.SetFloat(Velocity, _rb.velocity.magnitude);
+        }
+
+        void HandleFacing(float xVelocity)
+        {
+            if (!_rend.flipX && xVelocity < 0 || _rend.flipX && xVelocity > 0)
+            {
+                _rend.flipX = !_rend.flipX;
+            }
         }
 
         float VelocityXFromMove()
@@ -62,7 +85,7 @@ namespace Bee.Player
             var xAxis = Input.GetAxis("Horizontal");
 
             float x = 0;
-            
+
             if (Mathf.Abs(xAxis) > 0)
             {
                 var moveForce = _stateMachine.GetState() == JumpState.Grounded ? accel : accel * airWalkFactor;
@@ -95,6 +118,8 @@ namespace Bee.Player
             if (_jumpBounceTimer <= 0 && _stateMachine.GetState() == JumpState.Grounded)
             {
                 _stateMachine.SetJumping();
+                _anim.ResetTrigger(Landed);
+                _anim.SetTrigger(Jump);
                 _jumpBounceTimer = jumpBounceTime;
                 return jumpYVelocity;
             }
@@ -104,6 +129,12 @@ namespace Bee.Player
         public bool IsGrounded()
         {
             return Physics2D.Raycast(groundProbePoint.position, Vector2.down, groundProbeLength, jumpMask).collider != null;
+        }
+
+        public void HasLanded()
+        {
+            _anim.ResetTrigger(Jump);
+            _anim.SetTrigger(Landed);
         }
 
         public void PlayGame()
@@ -120,6 +151,8 @@ namespace Bee.Player
         {
             Debug.Log("reset player");
             _rb.transform.position = _startPos;
+            _anim.ResetTrigger(Jump);
+            _anim.ResetTrigger(Landed);
         }
     }
 }
