@@ -30,9 +30,19 @@ namespace Bee.Sky
             // Debug.Log($"{gameObject.name} rose at {_start} and is ascending");
         }
 
+        public void Stop()
+        {
+            _running = false;
+        }
+
+        public void Go()
+        {
+            _running = true;
+        }
+
         public void Update()
         {
-            if (!_running) return; // cheesy hack to prevent this running on 1st frame and breaking for some reason
+            if (!_running) return;
             
             if (_journeyTimer > 0)
             {
@@ -51,7 +61,8 @@ namespace Bee.Sky
 
             if (_journeyTimer <= 0f)
             {
-                transform.position = _end.position;
+                if (_end != null)
+                    transform.position = _end.position;
                 // Debug.Log($"{gameObject.name} has set at {_end}");
                 _running = false;
             }

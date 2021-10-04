@@ -18,6 +18,7 @@ namespace Bee.Sky
             _wind = GetComponentInChildren<WindController>();
             _dayNight = GetComponentInChildren<DayNightController>();
             _backdrop = GetComponentInChildren<BackdropController>();
+            _dayNight.Stop();
         }
 
         public void SetWeatherConditions(WeatherConditions conditions, float time)
@@ -32,17 +33,17 @@ namespace Bee.Sky
 
         public void PlayGame()
         {
-            // TODO: what goes here
+            _dayNight.Go();
         }
 
         public void PauseGame()
         {
-            // TODO: what goes here
+            _dayNight.Stop();
         }
 
         public void ResetGame()
         {
-            // TODO: what goes here
+            _dayNight.Start();
         }
     }
 }

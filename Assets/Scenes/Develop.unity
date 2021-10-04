@@ -6982,7 +6982,7 @@ MonoBehaviour:
   depthLevelWidth: 0.7
   oceanExtent: 12
   nodeScale: 1
-  nodeInterval: 1.5
+  nodeInterval: 1
   oceanNodePrefab: {fileID: 6764975129759060207, guid: 8df569dc182ba4374a9d28a0145c071e, type: 3}
   yPos: -3
 --- !u!1 &1755960789

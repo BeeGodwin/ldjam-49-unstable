@@ -60,7 +60,6 @@ namespace Bee.Weather
             {
                 _hours.Add(new Hour(_generator.GetConditions(forecast)));
             }
-            // SetWeather(_hours[0].Conditions);
         }
 
         public void Update()

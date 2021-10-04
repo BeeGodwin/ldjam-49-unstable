@@ -34,8 +34,23 @@ namespace Bee.Sky
             _moonLight = _moon.GetComponent<Light>();
             _starLight = GameObject.Find("Stars").GetComponent<Light>();
             _lantern = GameObject.Find("Lantern").GetComponent<Light>();
+            
+            _sun.transform.position = _easternHorizon.position;
+            HideMoon();
         }
-        
+
+        public void Stop()
+        {
+            _sun.Stop();
+            _moon.Stop();
+        }
+
+        public void Go()
+        {
+            _sun.Go();
+            _moon.Go();
+        }
+
         public void StartNextHour(float length)
         {
             if (_hour % 12 == 0)
