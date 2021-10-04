@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Bee.Game;
 using Bee.Ocean;
 using Bee.Sky;
 using UnityEngine;
 
 namespace Bee.Weather
 {
-    public class WeatherController : MonoBehaviour
+    public class WeatherController : MonoBehaviour, IGameSystem
     {
         public float dayLength;
         public Forecast forecast;
@@ -83,6 +84,21 @@ namespace Bee.Weather
         {
             _ocean.SetWeatherConditions(conditions, _hourLength);
             _sky.SetWeatherConditions(conditions, _hourLength);
+        }
+
+        public void PlayGame()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void PauseGame()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void StartGame()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

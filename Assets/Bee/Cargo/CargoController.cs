@@ -1,21 +1,20 @@
 using Bee.Game;
-using Bee.Sky;
 using UnityEngine;
 
-namespace Bee.Raft
+namespace Bee.Cargo
 {
-    public class RaftController : MonoBehaviour, IBlowable, IGameSystem
+    public class CargoController : MonoBehaviour, IGameSystem
     {
-        private Rigidbody2D _mastRb;
-
+        // Start is called before the first frame update
         void Start()
         {
-            _mastRb = GetComponentInChildren<Rigidbody2D>();
-        }
         
-        public void ApplyWindForce(float force)
+        }
+
+        // Update is called once per frame
+        void Update()
         {
-            _mastRb.AddForce(Vector2.right * force);
+        
         }
 
         public void PlayGame()

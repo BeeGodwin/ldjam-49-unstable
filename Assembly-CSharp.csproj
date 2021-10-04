@@ -68,6 +68,7 @@
      <Compile Include="Assets\Bee\Sky\CloudController.cs" />
      <Compile Include="Assets\Bee\Sky\CelestialBody.cs" />
      <Compile Include="Assets\Bee\Sky\BackdropController.cs" />
+     <Compile Include="Assets\Bee\Cargo\CargoController.cs" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.19f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

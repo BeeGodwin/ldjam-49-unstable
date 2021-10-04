@@ -1,10 +1,11 @@
 using System;
+using Bee.Game;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Bee.Player
 {
-    public class PlayerController : MonoBehaviour, IJumper
+    public class PlayerController : MonoBehaviour, IJumper, IGameSystem
     {
         // dependencies
         private Rigidbody2D _rb;
@@ -101,6 +102,21 @@ namespace Bee.Player
         public bool IsGrounded()
         {
             return Physics2D.Raycast(groundProbePoint.position, Vector2.down, groundProbeLength, jumpMask).collider != null;
+        }
+
+        public void PlayGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PauseGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartGame()
+        {
+            throw new NotImplementedException();
         }
     }
 }

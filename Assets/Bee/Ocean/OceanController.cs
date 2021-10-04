@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bee.Game;
 using Bee.Sky;
 using UnityEngine;
 
 namespace Bee.Ocean
 {
-    public class OceanController : MonoBehaviour, IWeather, IBlowable
+    public class OceanController : MonoBehaviour, IWeather, IBlowable, IGameSystem
     {
         public float wavePeriodFactor;
         public float waveLengthFactor;
@@ -176,6 +177,21 @@ namespace Bee.Ocean
         public void ApplyWindForce(float force)
         {
             // throw new NotImplementedException();
+        }
+
+        public void PlayGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PauseGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartGame()
+        {
+            throw new NotImplementedException();
         }
     }
 }

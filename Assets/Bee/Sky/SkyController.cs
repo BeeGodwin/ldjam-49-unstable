@@ -1,8 +1,9 @@
+using Bee.Game;
 using UnityEngine;
 
 namespace Bee.Sky
 {
-    public class SkyController : MonoBehaviour, IWeather
+    public class SkyController : MonoBehaviour, IWeather, IGameSystem
     {
         private IWeather _clouds;
         private RainController _rain;
@@ -27,6 +28,21 @@ namespace Bee.Sky
             _clouds.SetWeatherConditions(conditions, time);
             _rain.SetRainConditions(conditions, time);
             _wind.SetWindConditions(conditions.Wind, time);
+        }
+
+        public void PlayGame()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void PauseGame()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void StartGame()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
