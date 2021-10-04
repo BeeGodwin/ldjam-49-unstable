@@ -11,10 +11,13 @@ namespace Bee.Ocean
         public float wavePeriodFactor;
         public float waveLengthFactor;
         public float maxWaveMagnitude;
+        public float depthLevels;
+        
         
         private float _periodFactor;
         private float _lengthFactor;
         private float _magnitude;
+        
 
         // private float _periodDelta;
         // private float _lengthDelta;
@@ -26,15 +29,19 @@ namespace Bee.Ocean
         public float nodeScale;
         public float nodeInterval;
         public GameObject oceanNodePrefab;
+
+        private WeatherConditions _conditions;
         private List<OceanNodeController> _nodes = new List<OceanNodeController>();
-        private LineRenderer _line;
+        private LineRenderer _surfaceLine;
+        private List<LineRenderer> _depthLines;
         
         public float yPos;
 
         public void Start()
         {
-            _line = GetComponent<LineRenderer>();
+            _surfaceLine = GetComponentInChildren<LineRenderer>();
             InstantiateNodes();
+            InstantiateDepthLines();
             _periodFactor = wavePeriodFactor;
             _lengthFactor = waveLengthFactor;
             _magnitude = 0.1f;
@@ -63,7 +70,7 @@ namespace Bee.Ocean
                 node.transform.position = new Vector2(x, y + yPos);
             });
 
-            DrawSurface();
+            DrawOcean();
         }
 
         private void InstantiateNodes()
@@ -79,18 +86,43 @@ namespace Bee.Ocean
             }
         }
 
-        private void DrawSurface()
+        private void InstantiateDepthLines()
+        {
+            _depthLines = new List<LineRenderer>();
+            for (int i = 0; i < depthLevels; i++)
+            {
+                _depthLines.Add(Instantiate(_surfaceLine, transform));
+            }
+        }
+
+        private void DrawOcean()
         {
             var drawPositions = _nodes.ConvertAll(node => node.transform.GetChild(1).transform.position);
-            _line.positionCount = drawPositions.Count;
-            _line.SetPositions(drawPositions.ToArray());
+
+            var windFactor = WindFactor(_conditions);
+            
+            for (var i = _depthLines.Count; i > 0; i--)
+            {
+                var line = _depthLines[i - 1];
+                line.positionCount = drawPositions.Count;
+                var col = _surfaceLine.startColor;
+                var t = 1f - i * 0.15f;
+                var lineColor = new Color(col.r * t, col.b * t, col.g * t, 1f);
+                line.startColor = lineColor;
+                line.endColor = lineColor;
+                line.widthMultiplier = 1.75f;
+                var positions = drawPositions.ConvertAll(v3 => new Vector3(v3.x - windFactor * i, v3.y - i + 0.75f, v3.z));
+                line.SetPositions(positions.ToArray());
+            }
+            _surfaceLine.positionCount = drawPositions.Count;
+            _surfaceLine.SetPositions(drawPositions.ToArray()); // TODO: could do with setting off a colour gradient
         }
 
         public void SetWeatherConditions(WeatherConditions conditions, float time)
         {
             _adjustTime = time / 2;
             _adjustTimer = time / 2;
-            
+            _conditions = conditions;
             var rainFactor = RainFactor(conditions);
             var windFactor = WindFactor(conditions);
             
