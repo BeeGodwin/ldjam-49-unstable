@@ -29,7 +29,7 @@ namespace Bee.Game
 
         public void Update()
         {
-            if (_gameOver || !_gameRunning && Input.anyKey && !Input.GetButton("Cancel"))
+            if (_gameOver || !_gameRunning && Input.GetButton("Submit"))
             {
                 _gameRunning = true;
                 Debug.Log("Starting");

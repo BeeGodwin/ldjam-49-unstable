@@ -26,9 +26,11 @@ namespace Bee.Player
         // memo
         private Vector2 _velocity;
         private float _jumpBounceTimer;
+        private Vector2 _startPos;
         
         void Start()
         {
+            _startPos = transform.position;
             _rb = this.gameObject.transform.GetChild(0).GetComponent<Rigidbody2D>();
             _stateMachine = new JumpStateMachine();
             _jumpBounceTimer = 0;
@@ -106,17 +108,17 @@ namespace Bee.Player
 
         public void PlayGame()
         {
-            _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            _rb.simulated = true;
         }
 
         public void PauseGame()
         {
-            _rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            _rb.simulated = false;
         }
 
         public void ResetGame()
         {
-            // TODO: reset to original position
+            transform.position = _startPos;
         }
     }
 }

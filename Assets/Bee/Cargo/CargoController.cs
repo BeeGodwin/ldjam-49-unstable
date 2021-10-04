@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Bee.Game;
 using UnityEngine;
 
@@ -5,21 +6,22 @@ namespace Bee.Cargo
 {
     public class CargoController : MonoBehaviour, IGameSystem
     {
-        // Start is called before the first frame update
+        private List<Rigidbody2D> _rbs;
+
         void Start()
         {
-            // acquire list of GOs
+            _rbs = new List<Rigidbody2D>(GetComponentsInChildren<Rigidbody2D>());
             // acquire map of GOs to start positions
         }
 
         public void PlayGame()
         {
-            // play all RBs
+            _rbs.ForEach(rb => rb.simulated = true);
         }
 
         public void PauseGame()
         {
-            // pause all RBs
+            _rbs.ForEach(rb => rb.simulated = false);
         }
 
         public void ResetGame()
