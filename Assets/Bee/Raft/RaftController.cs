@@ -20,17 +20,17 @@ namespace Bee.Raft
 
         public void PlayGame()
         {
-            throw new System.NotImplementedException();
+            _mastRb.constraints = RigidbodyConstraints2D.None;
         }
 
         public void PauseGame()
         {
-            throw new System.NotImplementedException();
+            _mastRb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
         public void ResetGame()
         {
-            throw new System.NotImplementedException();
+            // noop
         }
     }
 }

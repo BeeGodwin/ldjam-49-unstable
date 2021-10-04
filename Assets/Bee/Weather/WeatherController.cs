@@ -23,6 +23,8 @@ namespace Bee.Weather
         private int _hourIndex = -1;
         private List<Hour> _hours;
 
+        private bool _running;
+
 
         public void Start()
         {
@@ -61,6 +63,8 @@ namespace Bee.Weather
 
         public void Update()
         {
+            if (!_running) return; 
+            
             if (_dayTimer == 0f) StartDay();
             
             _dayTimer += Time.deltaTime;
@@ -88,17 +92,19 @@ namespace Bee.Weather
 
         public void PlayGame()
         {
-            throw new System.NotImplementedException();
+            _running = true;
         }
 
         public void PauseGame()
         {
-            throw new System.NotImplementedException();
+            _running = false;
         }
 
         public void ResetGame()
         {
-            throw new System.NotImplementedException();
+            _dayCounter = 0;
+            _dayTimer = 0;
+            StartDay();
         }
     }
 }

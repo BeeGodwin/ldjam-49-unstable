@@ -8,28 +8,23 @@ namespace Bee.Cargo
         // Start is called before the first frame update
         void Start()
         {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+            // acquire list of GOs
+            // acquire map of GOs to start positions
         }
 
         public void PlayGame()
         {
-            throw new System.NotImplementedException();
+            // play all RBs
         }
 
         public void PauseGame()
         {
-            throw new System.NotImplementedException();
+            // pause all RBs
         }
 
         public void ResetGame()
         {
-            throw new System.NotImplementedException();
+            // set all RBs to original mapped positions
         }
     }
 }

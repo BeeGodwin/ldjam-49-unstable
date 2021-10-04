@@ -106,17 +106,17 @@ namespace Bee.Player
 
         public void PlayGame()
         {
-            throw new NotImplementedException();
+            _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
         public void PauseGame()
         {
-            throw new NotImplementedException();
+            _rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
         public void ResetGame()
         {
-            throw new NotImplementedException();
+            // TODO: reset to original position
         }
     }
 }

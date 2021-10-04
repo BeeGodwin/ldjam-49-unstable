@@ -32,17 +32,17 @@ namespace Bee.Sky
 
         public void PlayGame()
         {
-            throw new System.NotImplementedException();
+            // TODO: what goes here
         }
 
         public void PauseGame()
         {
-            throw new System.NotImplementedException();
+            // TODO: what goes here
         }
 
         public void ResetGame()
         {
-            throw new System.NotImplementedException();
+            // TODO: what goes here
         }
     }
 }

@@ -29,13 +29,13 @@ namespace Bee.Ocean
         public float nodeScale;
         public float nodeInterval;
         public GameObject oceanNodePrefab;
+        public float yPos;
 
         private WeatherConditions _conditions;
         private List<OceanNodeController> _nodes = new List<OceanNodeController>();
         private LineRenderer _surfaceLine;
         private List<LineRenderer> _depthLines;
-        
-        public float yPos;
+        private bool _running;
 
         public void Start()
         {
@@ -45,10 +45,12 @@ namespace Bee.Ocean
             _periodFactor = wavePeriodFactor;
             _lengthFactor = waveLengthFactor;
             _magnitude = 0.1f;
+            DrawOcean();
         }
 
         public void Update()
         {
+            if (!_running) return;
 
             if (_adjustTimer > 0f)
             {
@@ -176,22 +178,22 @@ namespace Bee.Ocean
 
         public void ApplyWindForce(float force)
         {
-            // throw new NotImplementedException();
+            // noop
         }
 
         public void PlayGame()
         {
-            throw new NotImplementedException();
+            _running = true;
         }
 
         public void PauseGame()
         {
-            throw new NotImplementedException();
+            _running = false;
         }
 
         public void ResetGame()
         {
-            throw new NotImplementedException();
+            // noop
         }
     }
 }
