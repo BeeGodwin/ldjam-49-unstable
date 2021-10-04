@@ -29,11 +29,12 @@ namespace Bee.Game
 
         public void Update()
         {
-            if (_gameOver || !_gameRunning && Input.GetButton("Submit"))
+            if (_gameOver && Input.GetButton("Submit") || !_gameRunning && Input.GetButton("Submit"))
             {
                 _gameRunning = true;
                 Debug.Log("Starting");
                 _systems.ForEach(system => system.PlayGame());
+                if (_gameOver) _gameOver = false;
             }
             
             if (_gameRunning && Input.GetButton("Cancel"))
@@ -42,6 +43,18 @@ namespace Bee.Game
                 Debug.Log("Pausing");
                 _systems.ForEach(system => system.PauseGame());
             }
+            
+            // DEBUG
+            if (_gameRunning && Input.GetKeyUp(KeyCode.W))
+            {
+                SetGameWon();
+            }
+
+            if (_gameRunning && Input.GetKeyUp(KeyCode.L))
+            {
+                SetGameLost();
+            }
+
         }
 
         public void SetGameLost()
