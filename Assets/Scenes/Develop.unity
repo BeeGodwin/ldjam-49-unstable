@@ -6965,30 +6965,8 @@ MonoBehaviour:
   _bg_06_11: {fileID: 21300000, guid: 10367ed932f3a42c58d39efaa38c102d, type: 3}
   _bg_12_17: {fileID: 21300000, guid: d0299a8a4728049dcbf00ad56108784b, type: 3}
   _bg_18_23: {fileID: 21300000, guid: 384919cecf16a4f4d80bd8994098bd0c, type: 3}
-  fadeCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  startY: -18
+  endY: 18
 --- !u!1 &2127552070
 GameObject:
   m_ObjectHideFlags: 0
