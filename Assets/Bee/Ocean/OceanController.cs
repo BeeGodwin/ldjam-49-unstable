@@ -45,11 +45,14 @@ namespace Bee.Ocean
             _periodFactor = wavePeriodFactor;
             _lengthFactor = waveLengthFactor;
             _magnitude = 0.1f;
+            PlaceNodes(0);
             DrawOcean();
         }
 
         public void Update()
         {
+            var radians = (Time.time * _periodFactor) % 360 * Mathf.Deg2Rad;
+            
             if (!_running) return;
 
             if (_adjustTimer > 0f)
@@ -60,9 +63,12 @@ namespace Bee.Ocean
                 // _lengthFactor += _lengthDelta * tDelta;
                 _magnitude += _magnitudeDelta * tDelta;
             }
+            PlaceNodes(radians);
+            DrawOcean();
+        }
 
-            var radians = (Time.time * _periodFactor) % 360 * Mathf.Deg2Rad;
-
+        void PlaceNodes(float radians)
+        {
             _nodes.ForEach(node =>
             {
                 var x = node.transform.position.x;
@@ -71,8 +77,6 @@ namespace Bee.Ocean
                 var y = sin * _magnitude;
                 node.transform.position = new Vector2(x, y + yPos);
             });
-
-            DrawOcean();
         }
 
         private void InstantiateNodes()
@@ -130,7 +134,7 @@ namespace Bee.Ocean
             
             var targetMagnitude = (rainFactor + windFactor) * maxWaveMagnitude;
             _magnitudeDelta = targetMagnitude - _magnitude;
-            
+            DrawOcean();
             // Debug.Log($"DEBUG:WEATHER:OCEAN target magnitude; {targetMagnitude}, delta; {_magnitudeDelta}; current magnitude {_magnitude}. Transition over {_adjustTimer} secs.");
         }
 

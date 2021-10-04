@@ -32,6 +32,7 @@ namespace Bee.Weather
             _hourLength = dayLength / 12;
             _ocean = GameObject.Find("Ocean").GetComponent<OceanController>();
             _sky = GameObject.Find("Sky").GetComponent<SkyController>();
+            GenerateWeather();
         }
 
         private void StartDay()
@@ -59,6 +60,7 @@ namespace Bee.Weather
             {
                 _hours.Add(new Hour(_generator.GetConditions(forecast)));
             }
+            // SetWeather(_hours[0].Conditions);
         }
 
         public void Update()
