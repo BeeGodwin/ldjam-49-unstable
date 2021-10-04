@@ -26,6 +26,8 @@ namespace Bee.Sky
 
         private float _fadeTime;
         private float _fadeTimer;
+
+        private bool _running;
     
         // Start is called before the first frame update
         void Start()
@@ -33,10 +35,13 @@ namespace Bee.Sky
             _backgroundSprites = new List<Sprite> { _bg_06_11, _bg_12_17, _bg_18_23, _bg_00_05 };
             _rendA = GameObject.Find("RendA").GetComponent<SpriteRenderer>();
             _rendB = GameObject.Find("RendB").GetComponent<SpriteRenderer>();
+            _running = false;
         }
 
         void Update()
         {
+            if (!_running) return;
+            
             if (_moveTimer > 0)
             {
                 _moveTimer -= Time.deltaTime;
@@ -82,6 +87,16 @@ namespace Bee.Sky
                 _moveTime = time * 3;
                 _moveTimer = time * 3;
             }
+        }
+
+        public void Stop()
+        {
+            
+        }
+
+        public void Go()
+        {
+            
         }
     }
 }

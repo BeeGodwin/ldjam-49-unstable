@@ -40,7 +40,7 @@ namespace Bee.Sky
         {
             _transitionTime = time / 2;
             _transitionTimer = time / 2;
-            
+
             _rain = conditions.Rain;
             _wind = conditions.Wind;
 
@@ -58,13 +58,13 @@ namespace Bee.Sky
                     break;
                 case Rain.TorrentialRain:
                     _roTDelta = 50 - emission.rateOverTime.constant;
-                    break;       
+                    break;
             }
 
             var shape = _particle.shape;
             switch (_wind)
             {
-                case Wind.None: 
+                case Wind.None:
                     _angleDelta = 0 - shape.rotation.z;
                     break;
                 case Wind.Breezy:
@@ -77,8 +77,16 @@ namespace Bee.Sky
                     _angleDelta = 45 - shape.rotation.z;
                     break;
             }
-            
             // Debug.Log($"DEBUG:WEATHER:RAIN: {_rain} and {_wind}. angleDelta: {_angleDelta}. RoTDelta: {_roTDelta}.");
+        }
+        public void Stop()
+        {
+            _particle.Pause();
+        }
+
+        public void Go()
+        {
+            _particle.Play();
         }
     }
 }
