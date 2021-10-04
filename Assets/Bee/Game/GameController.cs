@@ -6,6 +6,7 @@ using Bee.Raft;
 using Bee.Sky;
 using Bee.Weather;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Bee.Game
 {
@@ -14,8 +15,15 @@ namespace Bee.Game
         private List<IGameSystem> _systems;
         private bool _gameRunning;
         private bool _gameOver;
+
+        private Canvas _ui;
+        private Text _panelText;
+        
         public void Start()
         {
+            _ui = GameObject.Find("Canvas").GetComponent<Canvas>();
+            _panelText = GameObject.Find("PanelText").GetComponent<Text>();
+            
             _systems = new List<IGameSystem>
             {
                 GameObject.Find("Raft").GetComponent<RaftController>(),
@@ -33,6 +41,7 @@ namespace Bee.Game
             {
                 _gameRunning = true;
                 Debug.Log("Starting");
+                _ui.gameObject.SetActive(false);
                 _systems.ForEach(system => system.PlayGame());
                 if (_gameOver) _gameOver = false;
             }
@@ -41,6 +50,8 @@ namespace Bee.Game
             {
                 _gameRunning = false;
                 Debug.Log("Pausing");
+                _ui.gameObject.SetActive(true);
+                _panelText.text = "Paused. Press Enter / Start";
                 _systems.ForEach(system => system.PauseGame());
             }
             
@@ -60,11 +71,15 @@ namespace Bee.Game
         public void SetGameLost()
         {
             SetGameOver(true);
+            _ui.gameObject.SetActive(true);
+            _panelText.text = "LOSER. Press Enter to restart";
         }
 
         public void SetGameWon()
         {
             SetGameOver(false);
+            _ui.gameObject.SetActive(true);
+            _panelText.text = "WINNER. Press Enter to restart";
         }
 
         private void SetGameOver(bool won)
