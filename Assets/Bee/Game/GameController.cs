@@ -16,13 +16,18 @@ namespace Bee.Game
         private bool _gameRunning;
         private bool _gameOver;
 
-        private Canvas _ui;
+        private GameObject _ui;
         private Text _panelText;
+        private Text _distanceText;
+        private float _remainingDistance;
+
+        public float distance;
         
         public void Start()
         {
-            _ui = GameObject.Find("Canvas").GetComponent<Canvas>();
+            _ui = GameObject.Find("UIMain");
             _panelText = GameObject.Find("PanelText").GetComponent<Text>();
+            _distanceText = GameObject.Find("DistanceText").GetComponent<Text>();
             
             _systems = new List<IGameSystem>
             {
@@ -33,6 +38,7 @@ namespace Bee.Game
                 GameObject.Find("Sky").GetComponent<SkyController>(),
                 GameObject.Find("Cargo").GetComponent<CargoController>()
             };
+            _remainingDistance = distance;
         }
 
         public void Update()
@@ -41,7 +47,7 @@ namespace Bee.Game
             {
                 _gameRunning = true;
                 Debug.Log("Starting");
-                _ui.gameObject.SetActive(false);
+                _ui.SetActive(false);
                 _systems.ForEach(system => system.PlayGame());
                 if (_gameOver) _gameOver = false;
             }
@@ -50,16 +56,28 @@ namespace Bee.Game
             {
                 _gameRunning = false;
                 Debug.Log("Pausing");
-                _ui.gameObject.SetActive(true);
+                _ui.SetActive(true);
                 _panelText.text = "Paused. Press Enter / Start";
                 _systems.ForEach(system => system.PauseGame());
             }
-            
-            // DEBUG
-            if (_gameRunning && Input.GetKeyUp(KeyCode.W))
+
+            if (_gameRunning)
             {
-                SetGameWon();
+                _remainingDistance -= Time.deltaTime;
+                _distanceText.text = $"Distance Remaining: {(int)Mathf.Max(_remainingDistance / 10, 0f)}";
+                if (_remainingDistance < 0)
+                {
+                    SetGameWon();
+                }
+                if (Input.GetKeyUp(KeyCode.L))
+                {
+                    SetGameLost();
+                }
             }
+            
+
+            // DEBUG
+
 
             if (_gameRunning && Input.GetKeyUp(KeyCode.L))
             {
@@ -79,7 +97,7 @@ namespace Bee.Game
         {
             SetGameOver(false);
             _ui.gameObject.SetActive(true);
-            _panelText.text = "WINNER. Press Enter to restart";
+            _panelText.text = "Congratulations, you made it! \nPress Enter to restart";
         }
 
         private void SetGameOver(bool won)
@@ -88,6 +106,7 @@ namespace Bee.Game
             _gameRunning = false;
             _systems.ForEach(system => system.PauseGame());
             _systems.ForEach(system => system.ResetGame());
+            _remainingDistance = distance;
         }
     }
 
