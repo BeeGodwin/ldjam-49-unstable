@@ -14,6 +14,14 @@ namespace Bee.Ocean
                 var control = GameObject.Find("GameControl").GetComponent<GameController>();
                 control.SetGameLost();
             }
+
+            if (go.name.Contains("Cargo"))
+            {
+                var rb = go.GetComponent<Rigidbody2D>();
+                rb.gravityScale = 0.03f;
+                var col = go.GetComponent<Collider2D>();
+                col.isTrigger = true;
+            }
         }
     }
 }
