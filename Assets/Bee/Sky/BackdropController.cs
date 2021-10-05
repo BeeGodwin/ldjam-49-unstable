@@ -91,12 +91,12 @@ namespace Bee.Sky
 
         public void Stop()
         {
-            
+            _running = false;
         }
 
         public void Go()
         {
-            
+            _running = true;
         }
     }
 }
