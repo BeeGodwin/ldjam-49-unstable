@@ -3,7 +3,7 @@
 
 Try and survive a rough sea voyage and keep all your cargo on the raft!
 
-Made for Ludum Dare 49 in Unity.
+Made for Ludum Dare 49 in Unity. Play the v1.0.1 build [here](https://ayebeecoding.itch.io/unstable-voyage).
 
 Sprite animation courtesy of [Exiun](https://emily2.itch.io/schoolgirl-sidescroller-sprite)
 
